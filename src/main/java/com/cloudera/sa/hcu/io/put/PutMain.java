@@ -4,10 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import com.cloudera.sa.hcu.io.put.listener.HeartBeatConsoleOutputListener;
+import com.cloudera.sa.hcu.io.put.listener.PutListener;
+
 
 public class PutMain
 {
-	public static final String CONF_NUM_THREAD = "";
+	public static final String CONF_NUM_THREAD = "num.of.threads";
+	
 	public static void main(String[] args) throws Exception
 	{
 		if (args.length < 3)
@@ -40,6 +44,9 @@ public class PutMain
 		String[] inputFilePathsArray = inputFilePaths.split(",");
 		
 		Putter put = new Putter();
+		
+		PutListener listener = new HeartBeatConsoleOutputListener(5);
+		put.addListener(listener);
 		
 		put.put(inputFilePathsArray, rootOutputDir, p, numOfThreads);
 	}

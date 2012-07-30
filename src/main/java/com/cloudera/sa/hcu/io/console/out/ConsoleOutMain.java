@@ -32,8 +32,8 @@ public class ConsoleOutMain
 	private static void outputConsoleHelp()
 	{
 		System.out.println("List of sub commands:");
-		System.out.println(" kfv : For files where each row is <key>|<field>|<value>.  This will create a schema that will store all the rows");
-		System.out.println(" rowType : For files where one column determines the row type.  This will sperate row types into different avro files with different schemas.");
+		System.out.println(" avro : Output avro file to the console");
+		System.out.println(" rc : Output a rc file to the console.");
 		
 	}
 }

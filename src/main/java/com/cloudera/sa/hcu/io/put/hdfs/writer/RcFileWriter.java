@@ -62,7 +62,6 @@ public class RcFileWriter extends AbstractHdfsWriter
 	{
 		BytesRefArrayWritable arrayVal = new BytesRefArrayWritable(maxColumns);
 			
-		
 		int columnIndex = 0;
 		for (String columnValue: columns)
 		{

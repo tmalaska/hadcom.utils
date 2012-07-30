@@ -63,6 +63,12 @@ public class FlatFileReader extends LocalOneOrMoreFileColumnReader
 				
 				startingIndex += lengthArray[i];
 			}
+		}else
+		{
+			for (int i = 0; i < resultArray.length; i++)
+			{
+				resultArray[i] = "";
+			}
 		}
 		return resultArray;	
 	}

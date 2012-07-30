@@ -27,6 +27,14 @@ public class ConsoleOutAvroFile {
 	 */
 	public static void main(String[] args) throws IOException 
 	{
+		if (args.length < 1)
+		{
+			System.out.println("ConsoleOutAvroFile:");
+			System.out.println("");
+			System.out.println("Parameter: <inputFile>");
+			return;
+		}
+		
 		String inputFile = args[0];
 		
 		

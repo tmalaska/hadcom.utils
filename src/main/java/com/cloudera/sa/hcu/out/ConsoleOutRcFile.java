@@ -29,7 +29,7 @@ public class ConsoleOutRcFile {
 		String inputFile = args[0];
 		
 		
-		String delimiter = "\t";
+		String delimiter = "|";
 		if (args.length > 1)
 		{
 			delimiter = args[1];
@@ -48,18 +48,25 @@ public class ConsoleOutRcFile {
 		BytesRefArrayWritable row = new BytesRefArrayWritable();
 		
 		
-		while (reader.next(next))
+		while(reader.next(next)) 
 		{
 			reader.getCurrentRow(row);
 			
 			for (int j = 0; j < row.size(); j++)
 			{
 				BytesRefWritable byteWritable = row.get(j);
-				if (byteWritable.getStart() > 0 && byteWritable.getLength() > 0)
+				if (byteWritable.getStart() >= 0 && byteWritable.getLength() > 0)
 				{
-					System.out.print(new String(byteWritable.getData()).substring(byteWritable.getStart(), byteWritable.getStart() + byteWritable.getLength()) + delimiter);
+					System.out.print(new String(byteWritable.getData()).substring(byteWritable.getStart(), byteWritable.getStart() + byteWritable.getLength()));
+					
+				}
+				if (j < row.size()-1)
+				{
+					System.out.print(delimiter);
 				}
 			}
+
+			System.out.println("");
 		}
 		
 		
