@@ -7,13 +7,13 @@ import java.util.Properties;
 
 import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
 
-public class DefaultAggregateFileReader extends AbstractLocalFileColumnReader
+public class FileNameAggregateFileReader extends AbstractLocalFileColumnReader
 {
 	public static final String CONF_READER = "reader.aggregate.reader";
 	
 	AbstractLocalFileColumnReader rootReader;
 	
-	public DefaultAggregateFileReader(String[] inputPaths, AbstractLocalFileColumnReader rootReader) throws Exception
+	public FileNameAggregateFileReader(String[] inputPaths, AbstractLocalFileColumnReader rootReader) throws Exception
 	{
 		super(inputPaths, makeProperties(rootReader));
 	}
