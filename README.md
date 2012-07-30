@@ -5,8 +5,8 @@ This project creates a runnable jar file that can do some common advance functio
 This first version was built for CDH 4.  I will be making it work for CDH 3 shortly.
 
 ##Functionality
-###[Put](wiki/Put-in-detail)
-a collections of layered functionality for advance putting.  For details on how to use this functionality [click here](wiki/Put-in-detail) The user will be able to use all the following:
+###[Put](hadcom.utils/wiki/Put-in-detail)
+a collections of layered functionality for advance putting.  For details on how to use this functionality [click here](hadcom.utils/wiki/Put-in-detail) The user will be able to use all the following:
 
 
 Layer 1: Reading
@@ -41,8 +41,8 @@ Layer 6: Writing
 >
 >Writer Rc Files
 
-###[Out](wiki/Out-in-detail)
-hadoop fs -text only goes so far this takes us to the next step by being able to output rc files and avro files in clear text.  [Click here](wiki/Out-in-detail) for more information.
+###[Out](hadcom.utils/wiki/Out-in-detail)
+hadoop fs -text only goes so far this takes us to the next step by being able to output rc files and avro files in clear text.  [Click here](hadcom.utils/wiki/Out-in-detail) for more information.
 
 ###Env
 >Converting a {key}|{field}|{value} env files to an avro file with a generated schema
