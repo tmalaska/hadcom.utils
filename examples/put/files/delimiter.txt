@@ -1,0 +1,7 @@
+Josh|Title|Data Scientist
+Josh|Age|33
+Josh|Favorite Restaurant|Heirloom Cafe
+Ted|Office Location|Palo Alto
+Ted|Title|Systems Engineer
+Ted|Favorite Sport|Golf
+Ted|Age|34
