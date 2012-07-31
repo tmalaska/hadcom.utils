@@ -2,10 +2,11 @@ package com.cloudera.sa.hcu.io.put.local.reader;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStreamReader;
+import java.util.zip.GZIPInputStream;
 import java.util.Properties;
 
 import com.cloudera.sa.hcu.io.utils.LocalFileUtils;;
@@ -22,12 +23,33 @@ public abstract class LocalOneOrMoreFileColumnReader extends AbstractLocalFileCo
 	protected File[] fileArray;
 	protected int fileIndex = 0;
 	
-	protected void loadFile(String[] filePathArray) throws FileNotFoundException
+	protected void loadFile(String[] filePathArray) throws IOException
 	{
 		fileArray = LocalFileUtils.createFileArray(filePathArray);
 		
-		reader = new BufferedReader( new FileReader(fileArray[fileIndex]));
+		reader = getReaderForFileType(fileArray[fileIndex]);
 		
+	}
+	
+	/**
+	 * If the file is a gzip file then use the GZipInputStream.  Otherwise use the normal inputStream.
+	 * @param inputFile
+	 * @return
+	 * @throws IOException
+	 */
+	private BufferedReader getReaderForFileType(File inputFile) throws IOException
+	{
+		String fileName = inputFile.getName().toLowerCase();
+		if (fileName.endsWith(".gz") || fileName.endsWith(".zip"))
+		{
+			GZIPInputStream gzip = new GZIPInputStream(new FileInputStream(inputFile));
+			
+			return new BufferedReader(new InputStreamReader(gzip));
+			
+		}else
+		{
+			return new BufferedReader( new FileReader(inputFile));
+		}
 	}
 	
 	public long getNumberOfFiles()
@@ -50,7 +72,7 @@ public abstract class LocalOneOrMoreFileColumnReader extends AbstractLocalFileCo
 			if (fileIndex < fileArray.length)
 			{
 				reader.close();
-				reader = new BufferedReader( new FileReader(fileArray[fileIndex]));
+				reader = getReaderForFileType(fileArray[fileIndex]);
 				return getNextRow();
 			}
 			return null;
