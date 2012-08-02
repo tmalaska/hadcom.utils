@@ -41,6 +41,10 @@ Layer 6: Writing
 >
 >Writer Rc Files
 
+###Route
+This allows you to make one or more directories pumps to hdfs.  Either on file added or at time interval files in this directory will be read in and written to hadoop in any format you want (seq, avro, rc).
+
+
 ###[Out](hadcom.utils/wiki/Out-in-detail)
 hadoop fs -text only goes so far this takes us to the next step by being able to output rc files and avro files in clear text.  [Click here](hadcom.utils/wiki/Out-in-detail) for more information.
 
