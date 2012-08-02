@@ -20,28 +20,11 @@ public class VaribleLengthDelimiterReader extends LocalOneOrMoreFileColumnReader
 	Pattern pattern;
 	BufferedReader reader;
 	
-	public VaribleLengthDelimiterReader(String[] filePaths, Properties p) throws Exception
+	public VaribleLengthDelimiterReader( Properties p) throws Exception
 	{
-		super(filePaths, p);
-	}
-	
-	public VaribleLengthDelimiterReader(String filePath, String delimiterRegex, int rowTypeIndex) throws Exception
-	{
-		this(new String[]{filePath}, delimiterRegex, rowTypeIndex);
-	}
-	
-	public VaribleLengthDelimiterReader(String[] filePaths, String delimiterRegex, int rowTypeIndex) throws Exception
-	{
-		super(filePaths, makeProperties(delimiterRegex, rowTypeIndex));
+		super(p);
 	}
 
-	private static Properties makeProperties(String delimiterRegex, int rowTypeIndex)
-	{
-		Properties p = new Properties();
-		p.setProperty(CONF_DELIMITER_REGEX, delimiterRegex);
-		p.setProperty(CONF_ROW_TYPE_INDEX, Integer.toString(rowTypeIndex));
-		return p;
-	}
 	
 	@Override
 	protected void init(String[] inputPaths, Properties p) throws IOException

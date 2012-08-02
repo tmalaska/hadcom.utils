@@ -1,9 +1,6 @@
 package com.cloudera.sa.hcu.io.put.local.reader;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -17,26 +14,9 @@ public class FlatFileReader extends LocalOneOrMoreFileColumnReader
 	int[] lengthArray;
 	int totalLength;
 	
-	public FlatFileReader(String[] filePaths, Properties p) throws Exception
+	public FlatFileReader(Properties p) throws Exception
 	{
-		super(filePaths, p);
-	}
-	
-	public FlatFileReader(String filePath, int[] lengthArray) throws Exception
-	{
-		this(new String[]{filePath}, lengthArray);
-	}
-	
-	public FlatFileReader(String[] filePaths, int[] lengthArray) throws Exception
-	{
-		super(filePaths, makeProperties(lengthArray));
-	}
-
-	private static Properties makeProperties(int[] lengthArray)
-	{
-		Properties p = new Properties();
-		p.setProperty(CONF_FIELD_LENGTH_ARRAY, PropertyReaderUtils.convertIntArrayToString(lengthArray));
-		return p;
+		super(p);
 	}
 	
 	@Override

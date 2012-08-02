@@ -13,9 +13,9 @@ import com.cloudera.sa.hcu.io.utils.LocalFileUtils;;
 
 public abstract class LocalOneOrMoreFileColumnReader extends AbstractLocalFileColumnReader
 {
-	public LocalOneOrMoreFileColumnReader(String[] inputPaths, Properties prop) throws Exception
+	public LocalOneOrMoreFileColumnReader(Properties prop) throws Exception
 	{
-		super(inputPaths, prop);
+		super(prop);
 		loadFile(inputPaths);
 	}
 

@@ -9,8 +9,6 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.ql.io.RCFile;
 import org.apache.hadoop.hive.serde2.columnar.BytesRefArrayWritable;
 import org.apache.hadoop.hive.serde2.columnar.BytesRefWritable;
-import org.apache.hadoop.io.compress.CompressionCodec;
-import org.apache.hadoop.io.compress.SnappyCodec;
 
 import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
 
@@ -22,20 +20,21 @@ public class RcFileWriter extends AbstractHdfsWriter
 	public static final String CONF_MAX_COLUMNS = "writer.max.columns";
 	public static final String CONF_COMPRESSION_CODEC = COMPRESSION_CODEC;
 	
-	public RcFileWriter(String outputPath, Properties p) throws Exception
+	public RcFileWriter(Properties p) throws Exception
 	{
-		super(outputPath, p);
+		super(p);
 	}
 	
 	public RcFileWriter(String outputPath, int maxColumns, String compressionCodec) throws IOException
 	{
-		super(outputPath, makeProperties(maxColumns, compressionCodec));
+		super(makeProperties(outputPath, maxColumns, compressionCodec));
 	}
 	
-	private static Properties makeProperties(int maxColumns, String compressionCodec)
+	private static Properties makeProperties(String outputPath, int maxColumns, String compressionCodec)
 	{
 		Properties p = new Properties();
 		
+		p.setProperty(CONF_OUTPUT_PATH, outputPath);
 		p.setProperty(CONF_MAX_COLUMNS, Integer.toString(maxColumns));
 		p.setProperty(CONF_COMPRESSION_CODEC, compressionCodec);
 		

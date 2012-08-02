@@ -1,4 +1,4 @@
-package com.cloudera.sa.hcu.out;
+package com.cloudera.sa.hcu.io.out;
 
 import java.io.IOException;
 import java.util.ArrayList;

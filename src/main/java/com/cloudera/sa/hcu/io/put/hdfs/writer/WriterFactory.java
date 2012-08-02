@@ -10,15 +10,15 @@ public class WriterFactory
 	public static final String CONF_WRITER_CLASS = "put.writer";
 	
 
-	public static AbstractHdfsWriter initWriter(String rootOutputDir, Properties p)
+	public static AbstractHdfsWriter initWriter(Properties p)
 	{
 		String readerClass = p.getProperty(CONF_WRITER_CLASS);
 		
 		try
 		{
-			Constructor constructor = Class.forName(readerClass).getConstructor(String.class, Properties.class);
+			Constructor constructor = Class.forName(readerClass).getConstructor(Properties.class);
 		
-			return (AbstractHdfsWriter)constructor.newInstance(rootOutputDir, p);
+			return (AbstractHdfsWriter)constructor.newInstance(p);
 		}catch(Exception e)
 		{
 			throw new RuntimeException(CONF_WRITER_CLASS + " value of '" + readerClass + "' was unable to construct into a " + AbstractHdfsWriter.class.getName(), e);

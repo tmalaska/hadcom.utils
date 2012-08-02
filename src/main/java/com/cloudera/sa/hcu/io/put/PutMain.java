@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractHdfsWriter;
 import com.cloudera.sa.hcu.io.put.listener.HeartBeatConsoleOutputListener;
 import com.cloudera.sa.hcu.io.put.listener.PutListener;
+import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
+import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
 
 
 public class PutMain
 {
-	public static final String CONF_NUM_THREAD = "num.of.threads";
+	public static final String CONF_NUM_THREAD = "batch.files.thread.split";
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -48,6 +51,9 @@ public class PutMain
 		PutListener listener = new HeartBeatConsoleOutputListener(5);
 		put.addListener(listener);
 		
-		put.put(inputFilePathsArray, rootOutputDir, p, numOfThreads);
+		p.put(AbstractLocalFileColumnReader.CONF_INPUT_PATHS, inputFilePaths);
+		p.put(AbstractHdfsWriter.CONF_OUTPUT_PATH, rootOutputDir);
+		
+		put.put(p, numOfThreads);
 	}
 }

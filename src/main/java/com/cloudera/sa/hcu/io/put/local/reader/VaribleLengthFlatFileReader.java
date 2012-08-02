@@ -23,36 +23,15 @@ public class VaribleLengthFlatFileReader extends LocalOneOrMoreFileColumnReader
 	
 	public VaribleLengthFlatFileReader(String[] filePaths, Properties p) throws Exception
 	{
-		super(filePaths, p);
+		super(p);
 	}
-	
-	public VaribleLengthFlatFileReader(String filePath, int rowTypeStartIndex, int rowTypeLength, Map<String, int[]> rowTypeLengthArrayMap) throws Exception
-	{
-		this(new String[]{filePath}, rowTypeStartIndex,rowTypeLength, rowTypeLengthArrayMap);
-	}
-	
-	// 
-	public VaribleLengthFlatFileReader(String[] filePaths, int rowTypeStartIndex, int rowTypeLength, Map<String, int[]> rowTypeLengthArrayMap) throws Exception
-	{
-		super(filePaths, makeProperties(rowTypeStartIndex, rowTypeLength, rowTypeLengthArrayMap));
-	}
-
-	private static Properties makeProperties(int rowTypeStartIndex, int rowTypeLength, Map<String, int[]> rowTypeLengthArrayMap)
-	{
-		Properties p = new Properties();
 		
-		p.setProperty(CONF_ROW_TYPE_START_INDEX, Integer.toString(rowTypeStartIndex));
-		p.setProperty(CONF_ROW_TYPE_LENGTH, Integer.toString(rowTypeLength));
-		
-		return p;
-	}
-	
 	@Override
 	protected void init(String[] inputPaths, Properties p) throws IOException
 	{
-		this.rowTypeLength = rowTypeLength;
-		this.rowTypeLengthArrayMap = rowTypeLengthArrayMap;
-		this.rowTypeStartIndex = rowTypeStartIndex;
+		this.rowTypeLength = PropertyReaderUtils.getIntProperty(p, CONF_ROW_TYPE_LENGTH);
+		this.rowTypeLengthArrayMap = null;
+		this.rowTypeStartIndex = PropertyReaderUtils.getIntProperty(p, CONF_ROW_TYPE_START_INDEX);
 	}
 
 

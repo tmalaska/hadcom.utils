@@ -1,7 +1,7 @@
 package com.cloudera.sa.hcu.io.console.out;
 
-import com.cloudera.sa.hcu.out.ConsoleOutAvroFile;
-import com.cloudera.sa.hcu.out.ConsoleOutRcFile;
+import com.cloudera.sa.hcu.io.out.ConsoleOutAvroFile;
+import com.cloudera.sa.hcu.io.out.ConsoleOutRcFile;
 
 public class ConsoleOutMain
 {

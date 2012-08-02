@@ -26,21 +26,22 @@ public class AvroWriter extends AbstractHdfsWriter
 	public static final String CONF_SCHEMA_JSON = "avro.writer.schema.json";
 	public static final String CONF_COMPRESSION_CODEC = COMPRESSION_CODEC;
 	
-	public AvroWriter(String outputPath, Properties p) throws Exception
+	public AvroWriter(Properties p) throws Exception
 	{
-		super(outputPath, p);
+		super( p);
 	}
 	
 	public AvroWriter(String outputPath, String schemaJson, String compressionCodec) throws IOException
 	{
 	
-		super(outputPath, makeProperties(schemaJson, compressionCodec));
+		super(makeProperties(outputPath, schemaJson, compressionCodec));
 	}
 		
-	private static Properties makeProperties(String schemaJson, String compressionCodec)
+	private static Properties makeProperties(String outputPath, String schemaJson, String compressionCodec)
 	{
 		Properties p = new Properties();
 		
+		p.setProperty(CONF_OUTPUT_PATH, outputPath);
 		p.setProperty(CONF_SCHEMA_JSON, schemaJson);
 		p.setProperty(CONF_COMPRESSION_CODEC, compressionCodec);
 		

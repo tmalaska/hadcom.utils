@@ -13,16 +13,9 @@ public class FileNameAggregateFileReader extends AbstractLocalFileColumnReader
 	
 	AbstractLocalFileColumnReader rootReader;
 	
-	public FileNameAggregateFileReader(String[] inputPaths, AbstractLocalFileColumnReader rootReader) throws Exception
+	public FileNameAggregateFileReader( Properties p) throws Exception
 	{
-		super(inputPaths, makeProperties(rootReader));
-	}
-
-	private static Properties makeProperties(AbstractLocalFileColumnReader rootReader)
-	{
-		Properties p = new Properties();
-		p.setProperty(CONF_READER, rootReader.getClass().getName());
-		return p;
+		super(p);
 	}
 	
 	@Override
@@ -32,9 +25,9 @@ public class FileNameAggregateFileReader extends AbstractLocalFileColumnReader
 		
 		try
 		{
-			Constructor constructor = Class.forName(className).getConstructor(String[].class, Properties.class);
+			Constructor<AbstractLocalFileColumnReader> constructor = (Constructor<AbstractLocalFileColumnReader>)Class.forName(className).getConstructor(Properties.class);
 		
-			rootReader = (AbstractLocalFileColumnReader)constructor.newInstance(inputPaths, p);
+			rootReader = (AbstractLocalFileColumnReader)constructor.newInstance(p);
 		}catch(Exception e)
 		{
 			throw new RuntimeException(CONF_READER + " value of '" + className + "' was unable to construct into a " + AbstractLocalFileColumnReader.class.getName(), e);

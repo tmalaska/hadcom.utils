@@ -7,13 +7,10 @@ import java.util.Properties;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.CreateFlag;
 import org.apache.hadoop.fs.FileContext;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.compress.CompressionCodec;
-import org.apache.hadoop.io.compress.SnappyCodec;
 
 import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
 
@@ -26,20 +23,21 @@ public class SequenceFileDelimiterWriter extends AbstractHdfsWriter
 	String regexDelimiter;
 	Text value = new Text();
 	
-	public SequenceFileDelimiterWriter(String outputPath, Properties p) throws Exception
+	public SequenceFileDelimiterWriter(Properties p) throws Exception
 	{
-		super(outputPath, p);
+		super(p);
 	}
 	
 	public SequenceFileDelimiterWriter(String outputPath, String regexDelimiter, String compressionCodec) throws IOException
 	{
-		super(outputPath, makeProperties(regexDelimiter, compressionCodec));
+		super( makeProperties(outputPath, regexDelimiter, compressionCodec));
 	}
 	
-	private static Properties makeProperties(String regexDelimiter, String compressionCodec)
+	private static Properties makeProperties(String outputPath, String regexDelimiter, String compressionCodec)
 	{
 		Properties p = new Properties();
 		
+		p.setProperty(CONF_OUTPUT_PATH, outputPath);
 		p.setProperty(CONF_DELIMITER, regexDelimiter);
 		p.setProperty(CONF_COMPRESSION_CODEC, compressionCodec);
 		
@@ -53,8 +51,6 @@ public class SequenceFileDelimiterWriter extends AbstractHdfsWriter
 		
 		//Open hdfs file system
 		Configuration config = new Configuration();
-		FileSystem hdfs = FileSystem.get(config);
-		
 		
 		//Create path object
 		System.out.println("Creating '" + outputPath + "'");

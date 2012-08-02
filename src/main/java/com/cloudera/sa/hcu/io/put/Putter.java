@@ -14,6 +14,7 @@ import com.cloudera.sa.hcu.io.put.listener.PutListener;
 import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
 import com.cloudera.sa.hcu.io.put.local.reader.ReaderFactory;
 import com.cloudera.sa.hcu.io.utils.LocalFileUtils;
+import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
 
 public class Putter
 {
@@ -24,7 +25,7 @@ public class Putter
 		listeners.add(listener);
 	}
 	
-	private void notifyListenersOfA1000Rows(long rowsAdded, long lastReadTime, long lastWriteTime )
+	private void notifyWriten1000Rows(long rowsAdded, long lastReadTime, long lastWriteTime )
 	{
 		for (PutListener pl: listeners)
 		{
@@ -32,7 +33,7 @@ public class Putter
 		}
 	}
 	
-	private void notifyListenersOfStart(long numberOfFiles)
+	private void notifyOfStart(long numberOfFiles)
 	{
 		for (PutListener pl: listeners)
 		{
@@ -40,7 +41,7 @@ public class Putter
 		}
 	}
 	
-	private void notifyListenersOfFinished(long rowsAdded)
+	private void notifyOfFinished(long rowsAdded)
 	{
 		for (PutListener pl: listeners)
 		{
@@ -48,10 +49,10 @@ public class Putter
 		}
 	}
 	
-	public void put(String[] inputFiles, String rootOutputDir, Properties properties) throws IOException
+	public void put(Properties properties) throws IOException
 	{
-		AbstractLocalFileColumnReader reader = ReaderFactory.initReader(inputFiles, properties);
-		AbstractHdfsWriter writer = WriterFactory.initWriter(rootOutputDir, properties);
+		AbstractLocalFileColumnReader reader = ReaderFactory.initReader(properties);
+		AbstractHdfsWriter writer = WriterFactory.initWriter(properties);
 		
 		String[] columns;
 		long rowsAddedCounter = 0;
@@ -61,7 +62,7 @@ public class Putter
 		
 		long writeStartTime = 0;
 		
-		notifyListenersOfStart(reader.getNumberOfFiles());
+		notifyOfStart(reader.getNumberOfFiles());
 		
 		long readStartTime = System.currentTimeMillis();
 		
@@ -76,7 +77,7 @@ public class Putter
 			rowsAddedCounter++;
 			if (rowsAddedCounter % 1000 == 0)
 			{
-				notifyListenersOfA1000Rows(rowsAddedCounter, readTimeCounter, writeTimeCounter);
+				notifyWriten1000Rows(rowsAddedCounter, readTimeCounter, writeTimeCounter);
 				readTimeCounter = 0;
 				writeTimeCounter = 0;
 			}
@@ -86,16 +87,19 @@ public class Putter
 		writer.close();
 		reader.close();
 		
-		notifyListenersOfFinished(rowsAddedCounter);
+		notifyOfFinished(rowsAddedCounter);
 	}
 	
-	public void put(String[] inputFilePaths, String rootOutputDir, Properties properties, int threads) throws IOException
+	public void put( Properties properties, int threads) throws IOException
 	{
 		if (threads == 1)
 		{
-			put( inputFilePaths, rootOutputDir, properties);
+			put( properties);
 		}else
 		{
+			String[] inputFilePaths = PropertyReaderUtils.getStringProperty(properties ,AbstractLocalFileColumnReader.CONF_INPUT_PATHS).split(",");
+			String rootOutputDir = PropertyReaderUtils.getStringProperty(properties, AbstractHdfsWriter.CONF_OUTPUT_PATH);
+			
 			inputFilePaths = LocalFileUtils.createStringArrayOfFiles(inputFilePaths);
 			
 			ArrayList<ArrayList<String>> seperatedFiles = new ArrayList<ArrayList<String>>();
@@ -152,7 +156,10 @@ public class Putter
 		{
 			try
 			{
-				(new Putter()).put(inputFilePaths, rootOutputDir + "/part-i-" + threadNum, properties);
+				Properties putProperties = (Properties)properties.clone();
+				putProperties.setProperty(AbstractHdfsWriter.CONF_OUTPUT_PATH, putProperties.getProperty(AbstractHdfsWriter.CONF_OUTPUT_PATH) + "/part-i-" + threadNum);
+				
+				(new Putter()).put( properties);
 			} catch (IOException e)
 			{
 				e.printStackTrace();
