@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public class FlatFileReader extends LocalOneOrMoreFileColumnReader
 {
@@ -22,7 +22,7 @@ public class FlatFileReader extends LocalOneOrMoreFileColumnReader
 	@Override
 	protected void init(String[] inputPaths, Properties p) throws IOException
 	{
-		lengthArray = PropertyReaderUtils.getIntArrayProperty(p, CONF_FIELD_LENGTH_ARRAY);
+		lengthArray = PropertyUtils.getIntArrayProperty(p, CONF_FIELD_LENGTH_ARRAY);
 		for (int i: lengthArray)
 		{
 			totalLength += i;

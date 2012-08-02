@@ -17,7 +17,7 @@ import com.cloudera.sa.hcu.io.put.listener.PutListener;
 import com.cloudera.sa.hcu.io.route.scheduler.thread.DirWatcherObserver;
 import com.cloudera.sa.hcu.io.route.scheduler.thread.InputDirWatcherThread;
 import com.cloudera.sa.hcu.io.route.scheduler.thread.PutExecuterObserver;
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public abstract class AbstractRoute implements IRouteWorker, DirWatcherObserver, PutExecuterObserver, PutListener
 {
@@ -54,8 +54,8 @@ public abstract class AbstractRoute implements IRouteWorker, DirWatcherObserver,
 		successDir = prepDirectory(routeNamePrefix + CONF_SUCCESS_DIR, prop.getProperty(routeNamePrefix + CONF_SUCCESS_DIR));
 		failureDir = prepDirectory(routeNamePrefix + CONF_FAILURE_DIR, prop.getProperty(routeNamePrefix + CONF_FAILURE_DIR));
 		 
-		coreThreadCount = PropertyReaderUtils.getIntProperty(prop, routeNamePrefix + CONF_CORE_THREAD_COUNT);
-		maxThreadCount = PropertyReaderUtils.getIntProperty(prop, routeNamePrefix + CONF_MAX_THREAD_COUNT);
+		coreThreadCount = PropertyUtils.getIntProperty(prop, routeNamePrefix + CONF_CORE_THREAD_COUNT);
+		maxThreadCount = PropertyUtils.getIntProperty(prop, routeNamePrefix + CONF_MAX_THREAD_COUNT);
 		
 		putProperties = new Properties();
 		int lengthOfRoutePrefix = routeNamePrefix.length();
@@ -77,11 +77,11 @@ public abstract class AbstractRoute implements IRouteWorker, DirWatcherObserver,
 	{
 		Configuration config = new Configuration();
 		FileSystem hdfs = FileSystem.get(config);
-		String hdfsRootDirectory = PropertyReaderUtils.getStringProperty(prop, routeNamePrefix + "." + AbstractHdfsWriter.CONF_OUTPUT_PATH);
+		String hdfsRootDirectory = PropertyUtils.getStringProperty(prop, routeNamePrefix + "." + AbstractHdfsWriter.CONF_OUTPUT_PATH);
 		Path rootDirectory = new Path(hdfsRootDirectory);
 		
 		System.out.println(routeNamePrefix + "- Creating " + rootDirectory + " directory in hdfs.");
-		System.out.println(hdfs.mkdirs(rootDirectory));
+		hdfs.mkdirs(rootDirectory);
 		hdfs.close();
 	}
 	 
@@ -105,13 +105,14 @@ public abstract class AbstractRoute implements IRouteWorker, DirWatcherObserver,
 		{
 			throw new RuntimeException(routeNamePrefix + " - failed to move '" + sourceFile.getName() + "'");
 		}
+		throw new RuntimeException("bad");
 	}
 	
 	abstract protected void init(String routeNamePrefix, Properties prop) throws IOException;
 	
 	public void start() throws Exception
 	{
-		System.out.println("Route starting...");
+		System.out.println(routeNamePrefix + " - Route starting...");
 		synchronized(foo)
 		{
 			if (inputDirWatcher != null)
@@ -182,6 +183,11 @@ public abstract class AbstractRoute implements IRouteWorker, DirWatcherObserver,
 			inputDirWatcher = null;
 		}
     }
+    
+    public void onDirWatcherSecondsLeftReport(double secondsLeft )
+	{
+		//nothing
+	}
     
 	public void onA1000Processed(long rowsAdded, long lastReadTime, long lastWriteTime)
 	{

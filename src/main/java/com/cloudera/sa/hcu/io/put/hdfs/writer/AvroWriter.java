@@ -16,7 +16,7 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public class AvroWriter extends AbstractHdfsWriter
 {
@@ -51,7 +51,7 @@ public class AvroWriter extends AbstractHdfsWriter
 	@Override
 	protected void init(String outputPath, Properties p) throws IOException
 	{
-		schema = (new Schema.Parser()).parse(PropertyReaderUtils.getStringProperty(p, CONF_SCHEMA_JSON));
+		schema = (new Schema.Parser()).parse(PropertyUtils.getStringProperty(p, CONF_SCHEMA_JSON));
 		 
 		Configuration config = new Configuration();
 		FileSystem hdfs = FileSystem.get(config);

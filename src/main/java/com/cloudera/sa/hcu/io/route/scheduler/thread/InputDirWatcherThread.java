@@ -8,30 +8,50 @@ public class InputDirWatcherThread  implements IRouteThread
 	boolean continueRunning = true;
 	File inputFile;
 	DirWatcherObserver observer;
-	int internalInSec;
+	int waitInSeconds;
+	int reportEveryNSeconds;
+	String routePrefixName;
 	
-	public InputDirWatcherThread(File inputFile, DirWatcherObserver observer, int internalInSec)
+	public InputDirWatcherThread(String routePrefixName,File inputFile, DirWatcherObserver observer, int waitInSeconds)
+	{
+		this(routePrefixName, inputFile, observer, waitInSeconds, waitInSeconds);
+	}
+	
+	public InputDirWatcherThread(String routePrefixName, File inputFile, DirWatcherObserver observer, int waitInSeconds, int reportEveryNSeconds)
 	{
 		this.inputFile = inputFile;
 		this.observer = observer;
-		this.internalInSec = internalInSec;
+		this.waitInSeconds = waitInSeconds;
+		this.reportEveryNSeconds = reportEveryNSeconds;
+		this.routePrefixName = routePrefixName;
 	}
 
 	public void run()
 	{
-		System.out.println("InputDirWatcherThread starting...");
+		long lastRunTime = System.currentTimeMillis();
+		
+		System.out.println(routePrefixName + " - InputDirWatcherThread starting...");
 		try
 		{
 			while (continueRunning)
 			{
 				synchronized(this)
 				{
-					File[] files = inputFile.listFiles();
-					if (files.length > 0)
+					if ((System.currentTimeMillis() - lastRunTime) > (waitInSeconds * 1000))
 					{
-						observer.onDirWatcherFoundFiles(files);
+						lastRunTime = System.currentTimeMillis();
+						
+						File[] files = inputFile.listFiles();
+						if (files.length > 0)
+						{
+							observer.onDirWatcherFoundFiles(files);
+						}
+					}else
+					{
+						long millsLeft = (waitInSeconds *1000) - (System.currentTimeMillis() - lastRunTime);
+						observer.onDirWatcherSecondsLeftReport((((double)(millsLeft))/1000.0));
 					}
-					this.wait(internalInSec * 1000);
+					this.wait(reportEveryNSeconds * 1000);
 				}
 			}
 		}catch (Exception e)

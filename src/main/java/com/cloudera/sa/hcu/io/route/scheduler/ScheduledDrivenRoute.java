@@ -9,7 +9,7 @@ import com.cloudera.sa.hcu.io.put.listener.HeartBeatConsoleOutputListener;
 import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
 import com.cloudera.sa.hcu.io.route.scheduler.thread.InputDirWatcherThread;
 import com.cloudera.sa.hcu.io.route.scheduler.thread.PutExecutionThread;
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public class ScheduledDrivenRoute extends AbstractRoute
 {
@@ -26,13 +26,13 @@ public class ScheduledDrivenRoute extends AbstractRoute
 	@Override
 	protected void init(String routeName, Properties prop) throws IOException
 	{
-		internalTimeInMinutes = PropertyReaderUtils.getIntProperty(prop, routeName + CONF_BATCH_SEND_EVERY_N_MINUTES);
+		internalTimeInMinutes = PropertyUtils.getIntProperty(prop, routeName + CONF_BATCH_SEND_EVERY_N_MINUTES);
 	}
 
 	@Override
 	protected InputDirWatcherThread initInputDirWatchThread() throws Exception
 	{
-		return new InputDirWatcherThread(inputDir, this, internalTimeInMinutes * 60);
+		return new InputDirWatcherThread(routeNamePrefix, inputDir, this, internalTimeInMinutes * 60, internalTimeInMinutes * 6);
 	}
 	
 	public void onDirWatcherFoundFiles(File[] files) throws Exception
@@ -51,8 +51,6 @@ public class ScheduledDrivenRoute extends AbstractRoute
 			if (!success) {
 			    System.err.println("<error> Unable to move file '" + file.getAbsolutePath() + "' to processing directory '" + processDir + "'");
 			}
-			
-
 		}
 		
 		//Start thread to start sending files
@@ -62,10 +60,15 @@ public class ScheduledDrivenRoute extends AbstractRoute
 
 	public void onDirWatcherFiredExceptin(Exception e)
 	{
-		System.err.println("<error> got exception from thread ");
+		System.err.println(routeNamePrefix + " - <error> got exception from thread ");
 		e.printStackTrace();
+		throw new RuntimeException(e);
 	}
 
+	public void onDirWatcherSecondsLeftReport(double secondsLeft )
+	{
+		System.err.println(routeNamePrefix + " - " + secondsLeft + " seconds lefts before next batch.");
+	}
 
 }
 

@@ -11,7 +11,7 @@ import org.apache.hadoop.io.compress.SnappyCodec;
 import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
 
 
-public class PropertyReaderUtils
+public class PropertyUtils
 {
 
 	public static String getStringProperty(Properties p, String key)
@@ -69,7 +69,17 @@ public class PropertyReaderUtils
 		return strBuilder.toString();
 	}
 	
-
+	public static String convertStringArrayToString(String[] strArray)
+	{
+		StringBuilder strBuilder = new StringBuilder();
+		for (String val: strArray)
+		{
+			strBuilder.append(val + ",");
+		}
+		strBuilder.delete(strBuilder.length() - 1, strBuilder.length());
+		
+		return strBuilder.toString();
+	}
 	
 	
 	

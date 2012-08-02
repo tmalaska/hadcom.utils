@@ -12,7 +12,7 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public class SequenceFileDelimiterWriter extends AbstractHdfsWriter
 {
@@ -47,7 +47,7 @@ public class SequenceFileDelimiterWriter extends AbstractHdfsWriter
 	@Override
 	protected void init(String outputPath, Properties p) throws IOException
 	{
-		this.regexDelimiter = PropertyReaderUtils.getStringProperty(p, CONF_DELIMITER);
+		this.regexDelimiter = PropertyUtils.getStringProperty(p, CONF_DELIMITER);
 		
 		//Open hdfs file system
 		Configuration config = new Configuration();
@@ -61,7 +61,7 @@ public class SequenceFileDelimiterWriter extends AbstractHdfsWriter
 		SequenceFile.Metadata metaData = new SequenceFile.Metadata();
 	
 		EnumSet<CreateFlag> enumSet = EnumSet.of(CreateFlag.CREATE);
-		writer = SequenceFile.createWriter( FileContext.getFileContext(), config, outputFilePath, NullWritable.class, Text.class, SequenceFile.CompressionType.BLOCK, PropertyReaderUtils.getCompressionCodecProperty(p, CONF_COMPRESSION_CODEC), metaData, enumSet);
+		writer = SequenceFile.createWriter( FileContext.getFileContext(), config, outputFilePath, NullWritable.class, Text.class, SequenceFile.CompressionType.BLOCK, PropertyUtils.getCompressionCodecProperty(p, CONF_COMPRESSION_CODEC), metaData, enumSet);
 	}
 	
 	public void writeRow(String rowType, String[] columns) throws IOException

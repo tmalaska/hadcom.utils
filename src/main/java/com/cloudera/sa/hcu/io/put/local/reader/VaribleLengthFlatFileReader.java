@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public class VaribleLengthFlatFileReader extends LocalOneOrMoreFileColumnReader
 {
@@ -29,9 +29,9 @@ public class VaribleLengthFlatFileReader extends LocalOneOrMoreFileColumnReader
 	@Override
 	protected void init(String[] inputPaths, Properties p) throws IOException
 	{
-		this.rowTypeLength = PropertyReaderUtils.getIntProperty(p, CONF_ROW_TYPE_LENGTH);
+		this.rowTypeLength = PropertyUtils.getIntProperty(p, CONF_ROW_TYPE_LENGTH);
 		this.rowTypeLengthArrayMap = null;
-		this.rowTypeStartIndex = PropertyReaderUtils.getIntProperty(p, CONF_ROW_TYPE_START_INDEX);
+		this.rowTypeStartIndex = PropertyUtils.getIntProperty(p, CONF_ROW_TYPE_START_INDEX);
 	}
 
 

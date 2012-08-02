@@ -52,6 +52,8 @@ public class PutExecutionThread implements Runnable
 			
 			e.printStackTrace();
 			observer.onPutFailure(sourceFile);
+			
+			throw new RuntimeException(e);
 		}
 	}
 

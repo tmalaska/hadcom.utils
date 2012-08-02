@@ -29,7 +29,7 @@ public class EventDrivenRoute extends AbstractRoute
 	@Override
 	protected InputDirWatcherThread initInputDirWatchThread() throws Exception
 	{
-		return new InputDirWatcherThread(inputDir, this, 2);
+		return new InputDirWatcherThread(routeNamePrefix, inputDir, this, 2);
 	}
 	
 	public void onDirWatcherFoundFiles(File[] files) throws Exception

@@ -5,7 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public class FileNameAggregateFileReader extends AbstractLocalFileColumnReader
 {
@@ -21,7 +21,7 @@ public class FileNameAggregateFileReader extends AbstractLocalFileColumnReader
 	@Override
 	protected void init(String[] inputPaths, Properties p) throws IOException, SecurityException, NoSuchMethodException, ClassNotFoundException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException
 	{
-		String className = PropertyReaderUtils.getStringProperty(p, CONF_READER);
+		String className = PropertyUtils.getStringProperty(p, CONF_READER);
 		
 		try
 		{

@@ -3,7 +3,7 @@ package com.cloudera.sa.hcu.io.put.local.reader;
 import java.io.IOException;
 import java.util.Properties;
 
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public abstract class AbstractLocalFileColumnReader
 {
@@ -15,7 +15,7 @@ public abstract class AbstractLocalFileColumnReader
 	
 	public AbstractLocalFileColumnReader(Properties prop) throws Exception
 	{
-		inputPaths = PropertyReaderUtils.getStringProperty(prop, CONF_INPUT_PATHS).split(",");
+		inputPaths = PropertyUtils.getStringProperty(prop, CONF_INPUT_PATHS).split(",");
 		init(inputPaths, prop);
 	}
 	

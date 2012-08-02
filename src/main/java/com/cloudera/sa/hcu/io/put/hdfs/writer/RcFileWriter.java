@@ -10,7 +10,7 @@ import org.apache.hadoop.hive.ql.io.RCFile;
 import org.apache.hadoop.hive.serde2.columnar.BytesRefArrayWritable;
 import org.apache.hadoop.hive.serde2.columnar.BytesRefWritable;
 
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 public class RcFileWriter extends AbstractHdfsWriter
 {
@@ -44,7 +44,7 @@ public class RcFileWriter extends AbstractHdfsWriter
 	@Override
 	protected void init(String outputPath, Properties p) throws IOException
 	{	
-		this.maxColumns = PropertyReaderUtils.getIntProperty(p, CONF_MAX_COLUMNS);
+		this.maxColumns = PropertyUtils.getIntProperty(p, CONF_MAX_COLUMNS);
 		
 		//Open hdfs file system
 		Configuration config = new Configuration();
@@ -54,7 +54,7 @@ public class RcFileWriter extends AbstractHdfsWriter
 		Path outputFilePath = new Path(outputPath);
 		
 		config.set(RCFile.COLUMN_NUMBER_CONF_STR, Integer.toString(maxColumns));
-		writer = new RCFile.Writer(hdfs, config, outputFilePath, null, PropertyReaderUtils.getCompressionCodecProperty(p, CONF_COMPRESSION_CODEC ));
+		writer = new RCFile.Writer(hdfs, config, outputFilePath, null, PropertyUtils.getCompressionCodecProperty(p, CONF_COMPRESSION_CODEC ));
 	}
 
 	public void writeRow(String rowType, String[] columns) throws IOException

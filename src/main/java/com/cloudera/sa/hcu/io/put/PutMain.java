@@ -8,12 +8,11 @@ import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractHdfsWriter;
 import com.cloudera.sa.hcu.io.put.listener.HeartBeatConsoleOutputListener;
 import com.cloudera.sa.hcu.io.put.listener.PutListener;
 import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
-import com.cloudera.sa.hcu.utils.PropertyReaderUtils;
+import com.cloudera.sa.hcu.utils.PropertyUtils;
 
 
 public class PutMain
 {
-	public static final String CONF_NUM_THREAD = "batch.files.thread.split";
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -31,21 +30,6 @@ public class PutMain
 		Properties p = new Properties();
 		p.load(new FileInputStream(new File(args[2])));
 		
-		String numOfThreadsStr = p.getProperty(CONF_NUM_THREAD);
-		int numOfThreads = 1;
-		if (numOfThreadsStr != null)
-		{
-			try
-			{
-				numOfThreads = Integer.parseInt(numOfThreadsStr);
-			}catch(NumberFormatException e)
-			{
-				System.out.println("Value for '" + CONF_NUM_THREAD + "' is not a valid number. Value was '" + numOfThreadsStr + "'.");
-				return;
-			}
-		}
-		String[] inputFilePathsArray = inputFilePaths.split(",");
-		
 		Putter put = new Putter();
 		
 		PutListener listener = new HeartBeatConsoleOutputListener(5);
@@ -54,6 +38,6 @@ public class PutMain
 		p.put(AbstractLocalFileColumnReader.CONF_INPUT_PATHS, inputFilePaths);
 		p.put(AbstractHdfsWriter.CONF_OUTPUT_PATH, rootOutputDir);
 		
-		put.put(p, numOfThreads);
+		put.put(p);
 	}
 }
