@@ -41,8 +41,19 @@ Layer 6: Writing
 >
 >Writer Rc Files
 
-###Route
-This allows you to make one or more directories pumps to hdfs.  Either on file added or at time interval files in this directory will be read in and written to hadoop in any format you want (seq, avro, rc).
+###[Route](hadcom.utils/wiki/Route-in-detail)
+This allows you to make one or more directories pumps files into HDFS as you favorite splittable formates (sequence, avro, or rc)  Like the "put" functionality the route logic is also layered.
+
+Layer 1: Route
+>Event driven
+>
+>Schedule driven
+
+Layer 2: Put Threads
+>Define number of put threads in the thread pool
+
+Layer 3: Put
+>Get all the functionality and options from the above put command
 
 
 ###[Out](hadcom.utils/wiki/Out-in-detail)
