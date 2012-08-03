@@ -55,13 +55,13 @@ Layer 2: Put Threads
 Layer 3: Put
 >Get all the functionality and options from the above put command
 
-###[Get](had com.utils/wiki/Get-in-detail)
+###[Get](hadcom.utils/wiki/Get-in-detail)
 hadoop fs -get is good but.  What if you want to get a sequence, avro, or rc file?  And what if you want to be able to read the results?  Well then you can use these get methods to uncompress sequence, avro or rc files into text to your local drive.
 
 ###[Out](hadcom.utils/wiki/Out-in-detail)
 hadoop fs -text only goes so far this takes us to the next step by being able to output rc files and avro files in clear text.  [Click here](hadcom.utils/wiki/Out-in-detail) for more information.
 
-###Env
+###[Env](hadcom.utils/wiki/ENV-in-detail)
 >Converting a {key}|{field}|{value} env files to an avro file with a generated schema
 >
 >Converting a multiple row type file to multiple avro files each having a generated schema

@@ -1,0 +1,6 @@
+{ "name": "car", "type": "record", "fields": [
+ {"name": "id", "type": "string"}, 
+ {"name": "color", "type": "string"}, 
+ {"name": "type", "type": "string"},
+ {"name": "price", "type": "double"},
+ {"name": "title", "type": "string"} ]};
