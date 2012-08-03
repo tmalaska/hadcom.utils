@@ -9,6 +9,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.serde2.columnar.BytesRefArrayWritable;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Writable;
 
@@ -16,7 +17,7 @@ public class GetSequenceFile  extends AbstractGetter
 {
 	public static void main(String[] args) throws Exception
 	{
-		
+		(new GetSequenceFile()).getFile(args);
 		
 	}
 
@@ -45,8 +46,8 @@ public class GetSequenceFile  extends AbstractGetter
 
 		BufferedWriter localDataWriter = new BufferedWriter(new FileWriter(new File(outputLocation)));
 
-		Writable key = (Writable)reader.getKeyClass().newInstance();
-		Writable val = (Writable)reader.getValueClass().newInstance();
+		Writable key = createWriter(reader.getKeyClass());
+		Writable val = createWriter(reader.getValueClass());
 		
 		try
 		{
@@ -57,6 +58,7 @@ public class GetSequenceFile  extends AbstractGetter
 			while (reader.next(key, val))
 			{
 				localDataWriter.write(key + "\t" + val);
+				localDataWriter.newLine();
 				this.onWritenRecord();
 			}
 		}finally
@@ -65,6 +67,16 @@ public class GetSequenceFile  extends AbstractGetter
 			reader.close();	
 		}
 		this.onFinishedWriting();
-		
+	}
+
+	private Writable createWriter(Class cls) throws InstantiationException, IllegalAccessException
+	{
+		if (cls.equals(NullWritable.class) == true)
+		{
+			return NullWritable.get();
+		}else
+		{
+			return (Writable)cls.newInstance();
+		}
 	}
 }
