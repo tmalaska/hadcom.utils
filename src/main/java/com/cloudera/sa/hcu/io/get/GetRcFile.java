@@ -74,12 +74,14 @@ public class GetRcFile extends AbstractGetter
 				}
 	
 				localDataWriter.newLine();
+				onWritenRecord();
 			}
 		}finally
 		{
 			localDataWriter.close();
 			reader.close();	
 		}
+		onFinishedWriting();
 		
 	}
 }
