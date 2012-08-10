@@ -10,13 +10,7 @@ a collections of layered functionality for advance putting.  For details on how 
 
 
 Layer 1: Reading
->Delimiter files
->
->Flat Files
->
->Variable Length Delimiter files
->
->Variable Length Flat Files
+>Delimiter Files, Flat Files, Variable Length Delimiter files, Variable Length Flat Files
 
 Layer 2: Aggregating
 >Many files into a few
@@ -35,11 +29,7 @@ Layer 5: Compresing
 >Use Snappy, Gzip, or Bzip2
 
 Layer 6: Writing
->Write Sequence Files
->
->Writer Avro Files
->
->Writer Rc Files
+>Sequence, Avro Files, Rc Files, or to HBase
 
 ###[Route](hadcom.utils/wiki/Route-in-detail)
 This allows you to make one or more directories pumps files into HDFS as you favorite splittable formates (sequence, avro, or rc)  Like the "put" functionality the route logic is also layered.
