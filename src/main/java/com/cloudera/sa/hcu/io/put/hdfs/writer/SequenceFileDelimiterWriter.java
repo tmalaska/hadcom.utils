@@ -14,7 +14,7 @@ import org.apache.hadoop.io.Text;
 
 import com.cloudera.sa.hcu.utils.PropertyUtils;
 
-public class SequenceFileDelimiterWriter extends AbstractHdfsWriter
+public class SequenceFileDelimiterWriter extends AbstractWriter
 {
 	private static final String CONF_DELIMITER = "writer.delimiter";
 	private static final String CONF_COMPRESSION_CODEC = COMPRESSION_CODEC;

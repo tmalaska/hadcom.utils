@@ -12,7 +12,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractHdfsWriter;
+import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractWriter;
 import com.cloudera.sa.hcu.io.put.listener.PutListener;
 import com.cloudera.sa.hcu.io.route.scheduler.thread.DirWatcherObserver;
 import com.cloudera.sa.hcu.io.route.scheduler.thread.InputDirWatcherThread;
@@ -77,7 +77,7 @@ public abstract class AbstractRoute implements IRouteWorker, DirWatcherObserver,
 	{
 		Configuration config = new Configuration();
 		FileSystem hdfs = FileSystem.get(config);
-		String hdfsRootDirectory = PropertyUtils.getStringProperty(prop, routeNamePrefix + "." + AbstractHdfsWriter.CONF_OUTPUT_PATH);
+		String hdfsRootDirectory = PropertyUtils.getStringProperty(prop, routeNamePrefix + "." + AbstractWriter.CONF_OUTPUT_PATH);
 		Path rootDirectory = new Path(hdfsRootDirectory);
 		
 		System.out.println(routeNamePrefix + "- Creating " + rootDirectory + " directory in hdfs.");

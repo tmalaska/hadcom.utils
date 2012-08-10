@@ -8,7 +8,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractHdfsWriter;
+import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractWriter;
 import com.cloudera.sa.hcu.io.put.hdfs.writer.WriterFactory;
 import com.cloudera.sa.hcu.io.put.listener.PutListener;
 import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
@@ -90,7 +90,7 @@ public class Putter
 	private void putMultiThread(Properties properties, int threads) throws IOException
 	{
 		String[] inputFilePaths = PropertyUtils.getStringProperty(properties ,AbstractLocalFileColumnReader.CONF_INPUT_PATHS).split(",");
-		String rootOutputDir = PropertyUtils.getStringProperty(properties, AbstractHdfsWriter.CONF_OUTPUT_PATH);
+		String rootOutputDir = PropertyUtils.getStringProperty(properties, AbstractWriter.CONF_OUTPUT_PATH);
 		
 		inputFilePaths = LocalFileUtils.createStringArrayOfFiles(inputFilePaths);
 		
@@ -168,7 +168,7 @@ public class Putter
 	private void putSingleThread(Properties properties) throws IOException
 	{
 		AbstractLocalFileColumnReader reader = ReaderFactory.initReader(properties);
-		AbstractHdfsWriter writer = WriterFactory.initWriter(properties);
+		AbstractWriter writer = WriterFactory.initWriter(properties);
 		
 		String[] columns;
 		long rowsAddedCounter = 0;
@@ -227,7 +227,7 @@ public class Putter
 			{
 				Properties putProperties = (Properties)properties.clone();
 				putProperties.setProperty(AbstractLocalFileColumnReader.CONF_INPUT_PATHS,PropertyUtils.convertStringArrayToString(inputFilePaths));
-				putProperties.setProperty(AbstractHdfsWriter.CONF_OUTPUT_PATH, putProperties.getProperty(AbstractHdfsWriter.CONF_OUTPUT_PATH) + "/part-i-" + threadNum);
+				putProperties.setProperty(AbstractWriter.CONF_OUTPUT_PATH, putProperties.getProperty(AbstractWriter.CONF_OUTPUT_PATH) + "/part-i-" + threadNum);
 				
 				(new Putter()).put( putProperties, 1);
 			} catch (IOException e)

@@ -12,7 +12,7 @@ import org.apache.hadoop.hive.serde2.columnar.BytesRefWritable;
 
 import com.cloudera.sa.hcu.utils.PropertyUtils;
 
-public class RcFileWriter extends AbstractHdfsWriter
+public class RcFileWriter extends AbstractWriter
 {
 	RCFile.Writer writer;
 	int maxColumns;	

@@ -18,7 +18,7 @@ import org.apache.hadoop.fs.Path;
 
 import com.cloudera.sa.hcu.utils.PropertyUtils;
 
-public class AvroWriter extends AbstractHdfsWriter
+public class AvroWriter extends AbstractWriter
 {
 	DataFileWriter<GenericRecord> dataFileWriter;
 	Schema schema;

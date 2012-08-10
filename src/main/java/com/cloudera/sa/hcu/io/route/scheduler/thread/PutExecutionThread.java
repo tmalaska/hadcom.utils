@@ -5,7 +5,7 @@ import java.util.Properties;
 import java.util.Map.Entry;
 
 import com.cloudera.sa.hcu.io.put.Putter;
-import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractHdfsWriter;
+import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractWriter;
 import com.cloudera.sa.hcu.io.put.listener.PutListener;
 import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
 
@@ -22,7 +22,7 @@ public class PutExecutionThread implements Runnable
 	{
 		Properties pClone = (Properties)p.clone();
 		pClone.setProperty(AbstractLocalFileColumnReader.CONF_INPUT_PATHS, sourceFile.getAbsolutePath());
-		pClone.setProperty(AbstractHdfsWriter.CONF_OUTPUT_PATH, p.getProperty(AbstractHdfsWriter.CONF_OUTPUT_PATH) + "/" + sourceFile.getName());
+		pClone.setProperty(AbstractWriter.CONF_OUTPUT_PATH, p.getProperty(AbstractWriter.CONF_OUTPUT_PATH) + "/" + sourceFile.getName());
 		
 		this.sourceFile = sourceFile;
 		

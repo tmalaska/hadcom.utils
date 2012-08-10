@@ -52,7 +52,7 @@ public class GetAvroFile extends AbstractGetter
 
 		DataFileStream<GenericRecord> dataFileReader = new DataFileStream<GenericRecord>(dataInputStream, reader);
 
-		BufferedWriter localDataWriter = new BufferedWriter(new FileWriter(new File(outputLocation)));
+		BufferedWriter localDataWriter = createBufferedWriter(outputLocation);
 
 
 

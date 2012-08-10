@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
-import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractHdfsWriter;
+import com.cloudera.sa.hcu.io.put.hdfs.writer.AbstractWriter;
 import com.cloudera.sa.hcu.io.put.listener.HeartBeatConsoleOutputListener;
 import com.cloudera.sa.hcu.io.put.listener.PutListener;
 import com.cloudera.sa.hcu.io.put.local.reader.AbstractLocalFileColumnReader;
@@ -22,6 +22,8 @@ public class PutMain
 			System.out.println("Parameters: <inputFilePath(s)> <outputPath> <propertyFilePath>");
 			System.out.println();
 			System.out.println("If you use more then one inputFilePath, then just sperate by ','");
+			System.out.println();
+			System.out.println("If you are putting into HBase, then put \"HBase\" in the \"outputPath\" spot");
 			return;
 		}
 		
@@ -36,7 +38,7 @@ public class PutMain
 		put.addListener(listener);
 		
 		p.put(AbstractLocalFileColumnReader.CONF_INPUT_PATHS, inputFilePaths);
-		p.put(AbstractHdfsWriter.CONF_OUTPUT_PATH, rootOutputDir);
+		p.put(AbstractWriter.CONF_OUTPUT_PATH, rootOutputDir);
 		
 		put.put(p);
 	}
