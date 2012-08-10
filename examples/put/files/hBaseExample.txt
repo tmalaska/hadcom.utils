@@ -1,0 +1,6 @@
+100|Ted|Malaska|200
+101|Mickey|Mouse|200
+102|Red|Hat|201
+103|Cat|Hat|202
+104|Bob|Smith|202
+105|Cloudera|Roles|202
