@@ -136,22 +136,41 @@ public class HBaseWriter extends AbstractWriter
 		
 		public void put(String[] columns) throws IOException
 		{
-			String key = String.format(formatKeyStr, (Object[])columns);
-			
-			Put put = new Put(Bytes.toBytes(key));
-			
-			for (PutPojo putPojo: putPojoList)
+			try
 			{
-				String columnFamily = putPojo.getColumnFamily();
-				String columnFormatString = putPojo.getColumnFormatStr();
-				String column = String.format(columnFormatString, (Object[])columns);
-				String valueFormatString = putPojo.getValueFormatStr();
-				String value = String.format(valueFormatString, (Object[])columns);
-				
-				put.add(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));
+				if (columns.length > 0 && ( columns[0].isEmpty() == false))
+				{
+					String key = String.format(formatKeyStr, (Object[])columns);
+					
+					Put put = new Put(Bytes.toBytes(key));
+					
+						
+					for (PutPojo putPojo: putPojoList)
+					{
+						
+							String columnFamily = putPojo.getColumnFamily();
+							String columnFormatString = putPojo.getColumnFormatStr();
+							String column = String.format(columnFormatString, (Object[])columns);
+							String valueFormatString = putPojo.getValueFormatStr();
+						
+							String value = String.format(valueFormatString, (Object[])columns);
+							put.add(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));
+						
+					}
+					
+					putList.add(put);
+				}
+			}catch(Exception e)
+			{
+				int counter = 0;
+				System.err.println("Bad Row");
+				for (String column: columns)
+				{
+					System.err.println("(" +  counter++ + ") - " + column);
+				}
+				System.err.println("");
+				throw new RuntimeException(e);
 			}
-			
-			putList.add(put);
 			if (putList.size() > PUT_BATCH_SIZE)
 			{
 				flush();

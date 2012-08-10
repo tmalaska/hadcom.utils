@@ -37,7 +37,7 @@ public abstract class LocalOneOrMoreFileColumnReader extends AbstractLocalFileCo
 	 * @return
 	 * @throws IOException
 	 */
-	private BufferedReader getReaderForFileType(File inputFile) throws IOException
+	protected BufferedReader getReaderForFileType(File inputFile) throws IOException
 	{
 		String fileName = inputFile.getName().toLowerCase();
 		if (fileName.endsWith(".gz") || fileName.endsWith(".zip"))

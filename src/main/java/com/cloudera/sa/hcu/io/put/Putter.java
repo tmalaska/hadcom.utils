@@ -114,17 +114,22 @@ public class Putter
 		Configuration config = new Configuration();
 		FileSystem hdfs = FileSystem.get(config);
 		
-		//Create root folder
+		//Create root folder - HBase there is no need to make a directory TODO clean this up
+		
 		Path outputFilePath = new Path(rootOutputDir);
 		
 		System.out.println("Checking if directory exist: " + outputFilePath + " " + hdfs.exists(outputFilePath) + " " + hdfs.isDirectory(outputFilePath));
 		if (hdfs.exists(outputFilePath) == false)
 		{
-			System.out.println("Tring to make outputDirectory: " + outputFilePath);
-			hdfs.mkdirs(outputFilePath);
+			if (rootOutputDir.equals("HBase") == false)
+			{
+				System.out.println("Tring to make outputDirectory: " + outputFilePath);
+				hdfs.mkdirs(outputFilePath);
+			}
 		}
-		
+			
 		hdfs.close();
+		
 		
 		ArrayList<PutThread> putThreadList = new ArrayList<PutThread>();
 		
