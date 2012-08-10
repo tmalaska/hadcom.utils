@@ -10,7 +10,7 @@ a collections of layered functionality for advance putting.  For details on how 
 
 
 Layer 1: Reading
->Delimiter Files, Flat Files, Variable Length Delimiter files, Variable Length Flat Files
+>CSV files, Delimiter Files, Flat Files, Variable Length Delimiter files, Variable Length Flat Files
 
 Layer 2: Aggregating
 >Many files into a few
