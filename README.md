@@ -56,10 +56,10 @@ hadoop fs -text only goes so far this takes us to the next step by being able to
 >
 >Converting a multiple row type file to multiple avro files each having a generated schema
 
-###[NonSplittableGzip]
+###NonSplittableGzip
 >Converts a non-splittable gzip file stored in hdfs to a sequence file of your choose of compression (snappy, gzip, bzip2)
 
-###[NonSplittableZip]
+###NonSplittableZip
 >Converts a non-splittable zip file stored in hdfs to a sequence file(s) of your choose of compression (snappy, gzip, bzip2). There will be a sequence file for every file in the original zip file.
 
 
