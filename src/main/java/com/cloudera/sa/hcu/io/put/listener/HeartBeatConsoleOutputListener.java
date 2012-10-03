@@ -15,12 +15,13 @@ public class HeartBeatConsoleOutputListener implements PutListener
 
 	public void onA1000Processed(long rowsAdded, long lastReadTime, long lastWriteTime)
 	{
-		timePostedMS = lastPosting - System.currentTimeMillis();
+		timePostedMS += lastPosting - System.currentTimeMillis();
 		if (timePostedMS > waitMS)
 		{
 			System.out.println("Rows Added:" + rowsAdded + ", Read Time last 1000:" + lastReadTime + ", Write Time last 1000" + lastWriteTime);
 			
 			lastPosting = System.currentTimeMillis();
+			timePostedMS = 0;
 		}
 	}
 

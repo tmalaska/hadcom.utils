@@ -37,13 +37,17 @@ public class FileNameAggregateFileReader extends AbstractLocalFileColumnReader
 	public String[] getNextRow() throws IOException
 	{
 		String[] initResults = rootReader.getNextRow();
-		String[] finalResults = new String[initResults.length + 1];
-		
-		System.arraycopy(initResults, 0, finalResults, 1, initResults.length);
-		
-		finalResults[0] = rootReader.getCurrentFileName();
-		
-		return finalResults;
+		if (initResults != null)
+		{
+			String[] finalResults = new String[initResults.length + 1];
+			
+			System.arraycopy(initResults, 0, finalResults, 1, initResults.length);
+			
+			finalResults[0] = rootReader.getCurrentFileName();
+			
+			return finalResults;
+		}
+		return null;
 	}
 
 	public void close() throws IOException
